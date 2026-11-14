@@ -1,4 +1,4 @@
-/* Catfish Check — all client-side. No photos or details leave the device unless the user
+/* Catfish Detective — all client-side. No photos or details leave the device unless the user
    explicitly sends a photo to a reverse-image search site. */
 (() => {
 'use strict';

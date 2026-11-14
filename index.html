@@ -3,21 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Catfish Check</title>
+<title>Catfish Detective</title>
 <meta name="description" content="Check whether an online match is a real person, an AI-generated persona, or a catfish. Everything runs on your device.">
 <meta name="theme-color" content="#0f172a">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Catfish Check">
+<meta name="apple-mobile-web-app-title" content="Catfish Detective">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><img src="icons/icon-192.png" alt="" width="32" height="32"><span>Catfish Check</span></div>
+  <div class="brand"><picture><source srcset="icons/logo.webp" type="image/webp"><img src="icons/logo.png" alt="" width="36" height="36"></picture><span>Catfish Detective</span></div>
   <button id="installBtn" class="btn small ghost" hidden>Install app</button>
 </header>
 
@@ -33,7 +34,7 @@
   <section id="tab-photos" class="panel active">
     <div class="hero card">
       <h1>Is your match real?</h1>
-      <p>Add the photos your match sent you. Catfish Check reads their hidden metadata, looks for signs of AI generation, and gives you one-tap reverse image searches to see if the pics show up elsewhere under another name.</p>
+      <p>Add the photos your match sent you. Catfish Detective reads their hidden metadata, looks for signs of AI generation, and gives you one-tap reverse image searches to see if the pics show up elsewhere under another name.</p>
       <p class="privacy">🔒 Photos never leave your device unless <em>you</em> choose to upload one to a search site.</p>
     </div>
 
@@ -136,7 +137,7 @@
     <div id="verdictBox"></div>
     <div class="card">
       <h3>Reverse image results</h3>
-      <p class="muted">After running the reverse image searches, tell Catfish Check what you found:</p>
+      <p class="muted">After running the reverse image searches, tell Catfish Detective what you found:</p>
       <div class="radio-col" id="revResult">
         <label><input type="radio" name="rev" value="none" checked> <span>Haven't checked yet</span></label>
         <label><input type="radio" name="rev" value="clean"> <span>Nothing suspicious, or only their own profiles under the same name</span></label>
@@ -152,7 +153,7 @@
         <label><input type="radio" name="vid" value="glitchy"> <span>Video call felt off (glitchy face, ended fast, camera "broke")</span></label>
       </div>
     </div>
-    <p class="caveat">⚠️ Catfish Check is a guide, not proof. It can't confirm anyone's identity. Trust your gut, take it slow, and meet in a public place.</p>
+    <p class="caveat">⚠️ Catfish Detective is a guide, not proof. It can't confirm anyone's identity. Trust your gut, take it slow, and meet in a public place.</p>
     <button class="btn ghost" id="resetAll">Start over (clear everything)</button>
   </section>
 </main>

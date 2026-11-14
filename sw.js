@@ -1,6 +1,7 @@
-const CACHE = 'catfish-check-v2';
+const CACHE = 'catfish-detective-v3';
 const ASSETS = ['./', 'index.html', 'styles.css', 'app.js', 'vendor/exifr.umd.js', 'manifest.webmanifest',
-  'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
+  'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png',
+  'icons/logo.png', 'icons/logo.webp', 'icons/favicon-64.png', 'favicon.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS))); self.skipWaiting(); });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))));

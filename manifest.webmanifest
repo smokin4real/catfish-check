@@ -1,6 +1,6 @@
 {
-  "name": "Catfish Check",
-  "short_name": "Catfish Check",
+  "name": "Catfish Detective",
+  "short_name": "Catfish Detective",
   "description": "Check if an online match is real, AI-generated, or a catfish. Runs on your device.",
   "start_url": "./",
   "scope": "./",
