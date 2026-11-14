@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catfish Check</title>
+<meta name="description" content="Check whether an online match is a real person, an AI-generated persona, or a catfish. Everything runs on your device.">
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Catfish Check">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="icons/icon-192.png" alt="" width="32" height="32"><span>Catfish Check</span></div>
+  <button id="installBtn" class="btn small ghost" hidden>Install app</button>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-tab="photos" role="tab">📷 Photos</button>
+  <button class="tab" data-tab="profile" role="tab">📝 Profile</button>
+  <button class="tab" data-tab="quick" role="tab">⚡ Checks</button>
+  <button class="tab" data-tab="verdict" role="tab">✅ Verdict</button>
+</nav>
+
+<main>
+  <!-- PHOTOS -->
+  <section id="tab-photos" class="panel active">
+    <div class="hero card">
+      <h1>Is your match real?</h1>
+      <p>Add the photos your match sent you. Catfish Check reads their hidden metadata, looks for signs of AI generation, and gives you one-tap reverse image searches to see if the pics show up elsewhere under another name.</p>
+      <p class="privacy">🔒 Photos never leave your device unless <em>you</em> choose to upload one to a search site.</p>
+    </div>
+
+    <label class="dropzone card" id="dropzone">
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+      <div class="dz-icon">＋</div>
+      <div><strong>Add photos</strong></div>
+      <div class="muted">Tap to choose, or drag &amp; drop / paste here</div>
+    </label>
+    <p class="muted tip">Tip: save the original photo they sent (not a screenshot) for the best metadata check. Most apps strip metadata, so "no metadata" is common and not a red flag on its own.</p>
+
+    <div id="photoList"></div>
+  </section>
+
+  <!-- PROFILE -->
+  <section id="tab-profile" class="panel">
+    <form id="profileForm" class="card" autocomplete="off">
+      <h2>What they've told you</h2>
+      <div class="grid2">
+        <label>Name they gave<input name="name" placeholder="e.g. Sarah Miller"></label>
+        <label>Age they gave<input name="age" type="number" min="18" max="99" placeholder="e.g. 29"></label>
+        <label>Date of birth (if given)<input name="dob" type="date"></label>
+        <label>City they say they live in<input name="city" placeholder="e.g. Calgary, AB"></label>
+        <label>Job they claim<input name="job" placeholder="e.g. Offshore engineer"></label>
+        <label>How long you've been talking
+          <select name="duration">
+            <option value="">Select…</option>
+            <option value="days">Less than a week</option>
+            <option value="weeks">1–4 weeks</option>
+            <option value="months">1–3 months</option>
+            <option value="long">More than 3 months</option>
+          </select>
+        </label>
+        <label>Where you met
+          <select name="where">
+            <option value="">Select…</option>
+            <option value="app">Dating app</option>
+            <option value="social">Social media DM</option>
+            <option value="game">Game / other site</option>
+            <option value="wrongnumber">"Wrong number" text</option>
+            <option value="irl">In person / through friends</option>
+          </select>
+        </label>
+      </div>
+
+      <h3>Have they…</h3>
+      <div class="flags" id="flagList"></div>
+
+      <label>Anything else that felt off? (optional)<textarea name="notes" rows="3" placeholder="Stories that changed, odd grammar, etc."></textarea></label>
+    </form>
+
+    <div class="card" id="profileResult"></div>
+  </section>
+
+  <!-- QUICK CHECKS -->
+  <section id="tab-quick" class="panel">
+    <div class="card">
+      <h2>Search the details they gave you</h2>
+      <p class="muted">These open a normal web search in a new tab. You're checking whether what they told you holds up, for example whether the name, city and job make sense together.</p>
+      <div class="btnrow" id="quickBtns"></div>
+      <p class="muted small" id="quickHint">Fill in the name (and ideally city/job) on the Profile tab first.</p>
+    </div>
+
+    <div class="card">
+      <h2>The best test: a live video call</h2>
+      <ul class="tips">
+        <li><strong>Ask for a short live video call.</strong> Real people almost always agree within a few days. Constant excuses (broken camera, bad signal, deployed, on an oil rig) are the #1 catfish sign.</li>
+        <li><strong>On the call, ask them to do something unpredictable:</strong> turn their head side-to-side, wave a hand in front of their face, hold up a specific number of fingers. Real-time deepfake filters often glitch on profile turns and hands crossing the face.</li>
+        <li><strong>Watch for:</strong> frozen or blurry face while the background stays sharp, lips out of sync, the call "dropping" whenever you ask for movement, or a camera pointed at the ceiling.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Ask for a specific-pose selfie</h2>
+      <p>Ask for a fresh selfie that couldn't have been pulled from someone else's account, for example:</p>
+      <ul class="tips">
+        <li>Holding a piece of paper with <strong>your</strong> name and today's date</li>
+        <li>Touching their left ear with their right hand while giving a thumbs up</li>
+        <li>Pointing at a specific object you name (a spoon, a clock showing the time)</li>
+      </ul>
+      <button class="btn" id="genPose">🎲 Give me a random pose to ask for</button>
+      <p id="poseOut" class="pose"></p>
+      <p class="muted small">Heads-up: AI image tools can fake simple poses now. A live video call is still the strongest check.</p>
+    </div>
+
+    <div class="card">
+      <h2>Never, under any circumstances…</h2>
+      <ul class="tips danger">
+        <li>Send money, gift cards, crypto, or "fees" to someone you haven't met in person.</li>
+        <li>Invest on a platform or app they recommend ("my uncle's crypto strategy").</li>
+        <li>Share intimate photos. Sextortion scams often start with a fake profile.</li>
+        <li>Share bank logins, ID photos, or verification codes.</li>
+      </ul>
+      <p class="muted small">If you've been scammed in Canada, report it to the <a href="https://antifraudcentre-centreantifraude.ca/report-signalez-eng.htm" target="_blank" rel="noopener">Canadian Anti-Fraud Centre</a> (in the US: <a href="https://reportfraud.ftc.gov/" target="_blank" rel="noopener">FTC</a> / <a href="https://www.ic3.gov/" target="_blank" rel="noopener">IC3</a>), and report the profile to the app.</p>
+    </div>
+  </section>
+
+  <!-- VERDICT -->
+  <section id="tab-verdict" class="panel">
+    <div id="verdictBox"></div>
+    <div class="card">
+      <h3>Reverse image results</h3>
+      <p class="muted">After running the reverse image searches, tell Catfish Check what you found:</p>
+      <div class="radio-col" id="revResult">
+        <label><input type="radio" name="rev" value="none" checked> <span>Haven't checked yet</span></label>
+        <label><input type="radio" name="rev" value="clean"> <span>Nothing suspicious, or only their own profiles under the same name</span></label>
+        <label><input type="radio" name="rev" value="other"> <span>Found the same photos under a <strong>different name</strong></span></label>
+        <label><input type="radio" name="rev" value="model"> <span>Found them on a model / influencer / stock photo site</span></label>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Video call</h3>
+      <div class="radio-col" id="videoResult">
+        <label><input type="radio" name="vid" value="none" checked> <span>Haven't tried</span></label>
+        <label><input type="radio" name="vid" value="ok"> <span>Did a live video call and it was clearly them</span></label>
+        <label><input type="radio" name="vid" value="glitchy"> <span>Video call felt off (glitchy face, ended fast, camera "broke")</span></label>
+      </div>
+    </div>
+    <p class="caveat">⚠️ Catfish Check is a guide, not proof. It can't confirm anyone's identity. Trust your gut, take it slow, and meet in a public place.</p>
+    <button class="btn ghost" id="resetAll">Start over (clear everything)</button>
+  </section>
+</main>
+
+<footer class="foot muted small">Runs entirely in your browser. Nothing is stored on a server. A photo only leaves your device if you send it to a search site.</footer>
+
+<script src="vendor/exifr.umd.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
