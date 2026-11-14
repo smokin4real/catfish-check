@@ -1,4 +1,4 @@
-const CACHE = 'catfish-detective-v3';
+const CACHE = 'catfish-detective-v4';
 const ASSETS = ['./', 'index.html', 'styles.css', 'app.js', 'vendor/exifr.umd.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png',
   'icons/logo.png', 'icons/logo.webp', 'icons/favicon-64.png', 'favicon.png'];

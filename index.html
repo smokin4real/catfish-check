@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Catfish Detective</title>
 <meta name="description" content="Check whether an online match is a real person, an AI-generated persona, or a catfish. Everything runs on your device.">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070a14">
+<meta name="color-scheme" content="dark">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
@@ -17,22 +18,76 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Face scan with corner brackets + scan line (Photo Investigator) -->
+  <symbol id="ic-scan-face" viewBox="0 0 24 24">
+    <path d="M4 8.25V6.2A2.2 2.2 0 0 1 6.2 4h2.1"/>
+    <path d="M15.7 4h2.1A2.2 2.2 0 0 1 20 6.2v2.05"/>
+    <path d="M20 15.75v2.05A2.2 2.2 0 0 1 17.8 20h-2.1"/>
+    <path d="M8.3 20H6.2A2.2 2.2 0 0 1 4 17.8v-2.05"/>
+    <circle cx="12" cy="10.6" r="3.15"/>
+    <path d="M10.55 10.25h.02"/>
+    <path d="M13.45 10.25h.02"/>
+    <path d="M10.7 12.15a1.7 1.7 0 0 0 2.6 0"/>
+    <path d="M6.4 14.35h11.2"/>
+  </symbol>
+  <!-- ID card with checkmark (Information Checker) -->
+  <symbol id="ic-id-check" viewBox="0 0 24 24">
+    <rect x="2.6" y="4.4" width="14.8" height="11.4" rx="1.8"/>
+    <rect x="5" y="7.4" width="3.15" height="4" rx=".55"/>
+    <path d="M10.2 8.35h5"/>
+    <path d="M10.2 11.15h3.4"/>
+    <circle cx="17.15" cy="16.85" r="4.05"/>
+    <path d="M15.35 16.95 16.7 18.3 19.15 15.5"/>
+  </symbol>
+  <!-- Lightbulb (Recommendations) -->
+  <symbol id="ic-lightbulb" viewBox="0 0 24 24">
+    <path d="M9.15 18.15h5.7"/>
+    <path d="M10.15 21h3.7"/>
+    <path d="M15.35 14.35A5.15 5.15 0 1 0 8.65 14.35c.55.85 1.15 1.55 1.15 2.55v1.25h4.4v-1.25c0-1 .6-1.7 1.15-2.55Z"/>
+    <path d="M10.35 10.2a2.35 2.35 0 0 1 2.05-1.2"/>
+  </symbol>
+  <!-- Judge's gavel (Verdict) -->
+  <symbol id="ic-gavel" viewBox="0 0 24 24">
+    <path d="M12.15 3.55 19.85 7.15a1.15 1.15 0 0 1 .5 1.55l-1.55 2.7a1.15 1.15 0 0 1-1.55.5L9.7 8.45a1.15 1.15 0 0 1-.5-1.55l1.5-2.7a1.15 1.15 0 0 1 1.45-.65Z"/>
+    <path d="M14.2 5.55 16.55 9.7"/>
+    <path d="M11.05 11.15 6.15 19.55"/>
+    <path d="M3.2 20.15h8"/>
+    <path d="M4.15 22h6.1"/>
+  </symbol>
+</svg>
+
 <header class="topbar">
   <div class="brand"><picture><source srcset="icons/logo.webp" type="image/webp"><img src="icons/logo.png" alt="" width="36" height="36"></picture><span>Catfish Detective</span></div>
   <button id="installBtn" class="btn small ghost" hidden>Install app</button>
 </header>
 
-<nav class="tabs" role="tablist">
-  <button class="tab active" data-tab="photos" role="tab">📷 Photos</button>
-  <button class="tab" data-tab="profile" role="tab">📝 Profile</button>
-  <button class="tab" data-tab="quick" role="tab">⚡ Checks</button>
-  <button class="tab" data-tab="verdict" role="tab">✅ Verdict</button>
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <div class="tabs-inner">
+    <button class="tab active" data-tab="photos" role="tab" id="tabbtn-photos" aria-controls="tab-photos" aria-selected="true">
+      <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-scan-face"/></svg>
+      <span class="tab-label">Photo <span class="tab-rest">Investigator</span></span>
+    </button>
+    <button class="tab" data-tab="profile" role="tab" id="tabbtn-profile" aria-controls="tab-profile" aria-selected="false">
+      <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-id-check"/></svg>
+      <span class="tab-label">Information <span class="tab-rest">Checker</span></span>
+    </button>
+    <button class="tab" data-tab="quick" role="tab" id="tabbtn-quick" aria-controls="tab-quick" aria-selected="false">
+      <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-lightbulb"/></svg>
+      <span class="tab-label">Recommendations</span>
+    </button>
+    <button class="tab" data-tab="verdict" role="tab" id="tabbtn-verdict" aria-controls="tab-verdict" aria-selected="false">
+      <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-gavel"/></svg>
+      <span class="tab-label">Verdict</span>
+    </button>
+  </div>
 </nav>
 
 <main>
-  <!-- PHOTOS -->
-  <section id="tab-photos" class="panel active">
+  <!-- PHOTO INVESTIGATOR -->
+  <section id="tab-photos" class="panel active" role="tabpanel" aria-labelledby="tabbtn-photos">
     <div class="hero card">
+      <span class="panel-kicker"><svg class="kicker-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-scan-face"/></svg>Photo Investigator</span>
       <h1>Is your match real?</h1>
       <p>Add the photos your match sent you. Catfish Detective reads their hidden metadata, looks for signs of AI generation, and gives you one-tap reverse image searches to see if the pics show up elsewhere under another name.</p>
       <p class="privacy">🔒 Photos never leave your device unless <em>you</em> choose to upload one to a search site.</p>
@@ -40,7 +95,9 @@
 
     <label class="dropzone card" id="dropzone">
       <input type="file" id="fileInput" accept="image/*" multiple hidden>
-      <div class="dz-icon">＋</div>
+      <div class="dz-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+      </div>
       <div><strong>Add photos</strong></div>
       <div class="muted">Tap to choose, or drag &amp; drop / paste here</div>
     </label>
@@ -49,9 +106,10 @@
     <div id="photoList"></div>
   </section>
 
-  <!-- PROFILE -->
-  <section id="tab-profile" class="panel">
+  <!-- INFORMATION CHECKER -->
+  <section id="tab-profile" class="panel" role="tabpanel" aria-labelledby="tabbtn-profile">
     <form id="profileForm" class="card" autocomplete="off">
+      <span class="panel-kicker"><svg class="kicker-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-id-check"/></svg>Information Checker</span>
       <h2>What they've told you</h2>
       <div class="grid2">
         <label>Name they gave<input name="name" placeholder="e.g. Sarah Miller"></label>
@@ -89,13 +147,14 @@
     <div class="card" id="profileResult"></div>
   </section>
 
-  <!-- QUICK CHECKS -->
-  <section id="tab-quick" class="panel">
+  <!-- RECOMMENDATIONS -->
+  <section id="tab-quick" class="panel" role="tabpanel" aria-labelledby="tabbtn-quick">
     <div class="card">
+      <span class="panel-kicker"><svg class="kicker-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-lightbulb"/></svg>Recommendations</span>
       <h2>Search the details they gave you</h2>
       <p class="muted">These open a normal web search in a new tab. You're checking whether what they told you holds up, for example whether the name, city and job make sense together.</p>
       <div class="btnrow" id="quickBtns"></div>
-      <p class="muted small" id="quickHint">Fill in the name (and ideally city/job) on the Profile tab first.</p>
+      <p class="muted small" id="quickHint">Fill in the name (and ideally city/job) on the Information Checker tab first.</p>
     </div>
 
     <div class="card">
@@ -115,7 +174,7 @@
         <li>Touching their left ear with their right hand while giving a thumbs up</li>
         <li>Pointing at a specific object you name (a spoon, a clock showing the time)</li>
       </ul>
-      <button class="btn" id="genPose">🎲 Give me a random pose to ask for</button>
+      <button class="btn" id="genPose">Give me a random pose to ask for</button>
       <p id="poseOut" class="pose"></p>
       <p class="muted small">Heads-up: AI image tools can fake simple poses now. A live video call is still the strongest check.</p>
     </div>
@@ -133,7 +192,10 @@
   </section>
 
   <!-- VERDICT -->
-  <section id="tab-verdict" class="panel">
+  <section id="tab-verdict" class="panel" role="tabpanel" aria-labelledby="tabbtn-verdict">
+    <div class="panel-lead">
+      <span class="panel-kicker"><svg class="kicker-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-gavel"/></svg>Verdict</span>
+    </div>
     <div id="verdictBox"></div>
     <div class="card">
       <h3>Reverse image results</h3>

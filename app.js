@@ -9,7 +9,11 @@ const toast = msg => { const t = document.createElement('div'); t.className = 't
 
 /* ---------------- Tabs ---------------- */
 function showTab(name) {
-  $$('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  $$('.tab').forEach(b => {
+    const on = b.dataset.tab === name;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
   $$('.panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
   if (name === 'verdict') renderVerdict();
   if (name === 'quick') renderQuick();
@@ -387,7 +391,7 @@ function renderVerdict() {
   if (vid === 'glitchy') { s += 5; reasons.push(['bad', 'The video call felt off. Real-time face filters / deepfakes can cause this.']); }
   const hasData = done.length || pr.length || rev !== 'none' || vid !== 'none';
   let v;
-  if (!hasData) v = ['', '🤔', 'Not enough info yet', 'Add photos, fill in the profile details, and come back here.'];
+  if (!hasData) v = ['', '🤔', 'Not enough info yet', 'Add photos, fill in the Information Checker details, and come back here.'];
   else if (s >= 10 || rev === 'other' || ai >= 5) v = ['bad', '🚩', ai >= 5 && rev !== 'other' ? 'Likely AI or catfish' : 'Likely catfish', 'Strong warning signs. Don\'t send money or personal info. Ask for a live video call; a real person will do it.'];
   else if (s <= 0 && (vid === 'ok' || rev === 'clean')) v = ['good', '✅', 'Likely real', 'Nothing major stands out. Still take it slow and meet somewhere public.'];
   else v = ['warn', '⚠️', 'Unclear', 'Not enough to say either way. The fastest way to know: a live video call and a reverse image search.'];
